@@ -1,0 +1,18 @@
+:root {
+  --max-width: 1200px;
+  --nav-bg: white;
+  --main-bg: #f0eef1;
+  --border-radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
