@@ -1,5 +1,6 @@
 .main {
   text-align: center;
+  padding-bottom: 8rem;
 
   .btn.add {
     margin-bottom: 2rem;
@@ -8,7 +9,7 @@
 
   .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 4rem;
 
     .book-card {
@@ -23,6 +24,20 @@
       &:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
         transform: translateY(-5px);
+      }
+
+      p {
+        &:first-child {
+          font-size: 2.5rem;
+        }
+
+        &:nth-child(2) {
+          font-size: 2rem;
+        }
+
+        &:last-child {
+          font-size: 1.8rem;
+        }
       }
 
       .btn-wrapper {

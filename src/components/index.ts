@@ -1,3 +1,4 @@
 export * from './Navbar';
-export * from './Bookholder';
+export * from './Bookshelf';
+export * from './Modal';
 export * from './Footer';

@@ -6,7 +6,10 @@ export function Footer() {
         <span role='img' aria-label='heart'>
           ❤️
         </span>{' '}
-        by ccrsxx
+        by{' '}
+        <a href='https://github.com/ccrsxx' target='_blank' rel='noreferrer'>
+          ccrsxx
+        </a>
       </p>
     </footer>
   );

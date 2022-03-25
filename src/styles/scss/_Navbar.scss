@@ -11,6 +11,14 @@
     a {
       font-size: 3rem;
       font-weight: bold;
+      text-decoration: underline transparent;
+      text-underline-position: under;
+      transition: 100ms ease-out;
+
+      &:hover {
+        opacity: 0.6;
+        text-decoration-color: lightgray;
+      }
     }
 
     button {
