@@ -56,8 +56,8 @@ export function App() {
 
       if (mode !== 'add') {
         setTimeout(() => {
-          setModalMode('add');
           setSelectedBook(null);
+          setModalMode('add');
         }, 300);
       }
     };
