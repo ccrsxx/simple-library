@@ -1,5 +1,5 @@
 export const newBookDefault = {
-  id: 0,
+  id: Date.now(),
   title: '',
   author: '',
   year: 0,

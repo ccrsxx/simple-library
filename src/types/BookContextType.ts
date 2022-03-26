@@ -1,9 +1,7 @@
 type CurriedContext = (targetId: number) => () => void;
 
 export interface BookContextType {
-  handleChange: (
-    targetId: null | number
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  editBook: CurriedContext;
   removeBook: CurriedContext;
   toggleRead: CurriedContext;
 }

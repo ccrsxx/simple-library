@@ -60,4 +60,39 @@
       }
     }
   }
+
+  .modal-content {
+    display: grid;
+    gap: 2rem;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .login {
+      background-color: lightgreen;
+    }
+
+    .button-wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      button {
+        background-color: var(--main-bg);
+        font-size: 1.8rem;
+        color: white;
+        font-weight: normal;
+
+        &:first-child {
+          background-color: lightseagreen;
+        }
+
+        &:last-child {
+          background-color: crimson;
+        }
+      }
+    }
+  }
 }

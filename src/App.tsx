@@ -1,6 +1,12 @@
-import { useLocalStorage, BookContext, newBookDefault } from './common';
+import { useState } from 'react';
+import {
+  useLocalStorage,
+  ModalContext,
+  BookContext,
+  newBookDefault
+} from './common';
 import { Navbar, Bookshelf, Footer, Modal } from './components';
-import type { NewBook } from './types';
+import type { NewBook, ModalMode } from './types';
 
 export function App() {
   const [allBooks, setAllBooks] = useLocalStorage<NewBook[]>('allBooks', []);
@@ -8,33 +14,76 @@ export function App() {
     'newBook',
     newBookDefault
   );
-  const [isOpen, setIsOpen] = useLocalStorage('isOpen', false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<ModalMode>('add');
+  const [selectedBook, setSelectedBook] = useState<NewBook | null>(null);
 
   const handleChange =
-    (targetId: null | number = null) =>
+    (targetId?: number) =>
     ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-      if (targetId !== null) {
-        const { id, textContent } = target;
+      const { name, type, checked, value } = target;
+      const inputValue = type === 'checkbox' ? checked : value;
+
+      if (targetId) {
         const newBooks = allBooks.map((book) =>
-          book.id === targetId ? { ...book, [id]: textContent } : book
+          book.id === targetId ? { ...book, [name]: inputValue } : book
         );
         setAllBooks(newBooks);
+        setSelectedBook({ ...selectedBook, [name]: inputValue } as NewBook);
       } else {
-        const { name, type, checked, value } = target;
-        const inputValue = type === 'checkbox' ? checked : value;
         setNewBook({ ...newBook, [name]: inputValue });
       }
     };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setAllBooks([...allBooks, { ...newBook, id: allBooks.length }]);
+    setAllBooks([...allBooks, { ...newBook, id: Date.now() }]);
     setNewBook(newBookDefault);
     setIsOpen(false);
   };
 
+  const handleModal =
+    (mode: ModalMode) =>
+    (
+      e:
+        | React.FormEvent<HTMLFormElement>
+        | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+    ) => {
+      if (e.type === 'submit') e.preventDefault();
+
+      setIsOpen(false);
+
+      if (mode !== 'add') {
+        setTimeout(() => {
+          setModalMode('add');
+          setSelectedBook(null);
+        }, 300);
+      }
+    };
+
+  const handleLogin = () => () => {
+    setIsOpen(true);
+    setModalMode('login');
+  };
+
+  const editBook = (id: number) => () => {
+    setModalMode('edit');
+    setSelectedBook(allBooks.find((book) => book.id === id) as NewBook);
+    setIsOpen(true);
+  };
+
   const removeBook = (targetId: number) => () => {
-    setAllBooks(allBooks.filter(({ id }) => id !== targetId));
+    if (modalMode === 'remove') {
+      setAllBooks(allBooks.filter(({ id }) => id !== targetId));
+      setSelectedBook(null);
+      setIsOpen(false);
+      setModalMode('add');
+    } else {
+      setModalMode('remove');
+      setIsOpen(true);
+      setSelectedBook(allBooks.find((book) => book.id === targetId) as NewBook);
+    }
   };
 
   const toggleRead = (targetId: number) => () => {
@@ -47,15 +96,22 @@ export function App() {
 
   return (
     <div className='App'>
-      <Navbar />
-      <Modal
-        {...newBook}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-      />
-      <BookContext.Provider value={{ handleChange, removeBook, toggleRead }}>
+      <Navbar handleLogin={handleLogin} />
+      <ModalContext.Provider
+        value={{
+          ...(selectedBook || newBook),
+          handleChange,
+          handleSubmit,
+          removeBook
+        }}
+      >
+        <Modal
+          isOpen={isOpen}
+          modalMode={modalMode}
+          handleModal={handleModal}
+        />
+      </ModalContext.Provider>
+      <BookContext.Provider value={{ editBook, removeBook, toggleRead }}>
         <Bookshelf allBooks={allBooks} setIsOpen={setIsOpen} />
       </BookContext.Provider>
       <Footer />

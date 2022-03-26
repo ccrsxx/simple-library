@@ -1,35 +1,15 @@
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { BookContext } from '../common';
-import type { BookshelfProps, BookCardProps } from '../types';
+import type { BookshelfProps, NewBook } from '../types';
 
-function BookCard({ id, title, author, year, isComplete }: BookCardProps) {
-  const { handleChange, removeBook, toggleRead } = useContext(BookContext);
-  const defaultValue = useRef([title, author, year]);
+function BookCard({ id, title, author, year, isComplete }: NewBook) {
+  const { editBook, removeBook, toggleRead } = useContext(BookContext);
 
-  const [newTitle, newAuthor, newYear] = defaultValue.current as string[];
   return (
     <div className='book-card'>
-      <p
-        id='title'
-        onInput={handleChange(id)}
-        contentEditable
-        suppressContentEditableWarning
-        dangerouslySetInnerHTML={{ __html: newTitle }}
-      />
-      <p
-        id='author'
-        onInput={handleChange(id)}
-        contentEditable
-        suppressContentEditableWarning
-        dangerouslySetInnerHTML={{ __html: newAuthor }}
-      />
-      <p
-        id='year'
-        onInput={handleChange(id)}
-        contentEditable
-        suppressContentEditableWarning
-        dangerouslySetInnerHTML={{ __html: newYear }}
-      />
+      <p>{title}</p>
+      <p>{author}</p>
+      <p>{year}</p>
       <div className='btn-wrapper'>
         <button
           style={{ backgroundColor: isComplete ? 'lightgreen' : 'pink' }}
@@ -38,6 +18,9 @@ function BookCard({ id, title, author, year, isComplete }: BookCardProps) {
           onClick={toggleRead(id)}
         >
           {isComplete ? 'Completed' : 'Not read yet'}
+        </button>
+        <button className='btn card' type='button' onClick={editBook(id)}>
+          Edit
         </button>
         <button className='btn card' type='button' onClick={removeBook(id)}>
           Remove

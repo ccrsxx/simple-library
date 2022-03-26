@@ -5,3 +5,5 @@ export interface NewBook {
   year: number;
   isComplete: boolean;
 }
+
+export type ModalMode = 'add' | 'edit' | 'remove' | 'login';
