@@ -75,10 +75,10 @@ export function App() {
 
   const removeBook = (targetId: number) => () => {
     if (modalMode === 'remove') {
-      setAllBooks(allBooks.filter(({ id }) => id !== targetId));
       setSelectedBook(null);
       setIsOpen(false);
-      setModalMode('add');
+      setAllBooks(allBooks.filter(({ id }) => id !== targetId));
+      setTimeout(() => setModalMode('add'), 300);
     } else {
       setModalMode('remove');
       setIsOpen(true);
