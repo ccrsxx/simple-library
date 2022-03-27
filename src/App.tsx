@@ -62,7 +62,7 @@ export function App() {
       }
     };
 
-  const handleLogin = () => () => {
+  const handleLogin = () => {
     setIsOpen(true);
     setModalMode('login');
   };
