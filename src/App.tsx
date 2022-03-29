@@ -26,10 +26,11 @@ export function App() {
       const inputValue = type === 'checkbox' ? checked : value;
 
       if (targetId) {
-        const newBooks = allBooks.map((book) =>
-          book.id === targetId ? { ...book, [name]: inputValue } : book
+        setAllBooks(
+          allBooks.map((book) =>
+            book.id === targetId ? { ...book, [name]: inputValue } : book
+          )
         );
-        setAllBooks(newBooks);
         setSelectedBook({ ...selectedBook, [name]: inputValue } as NewBook);
       } else {
         setNewBook({ ...newBook, [name]: inputValue });
